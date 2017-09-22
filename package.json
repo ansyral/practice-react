@@ -1,0 +1,30 @@
+{
+  "name": "practice-react",
+  "version": "0.1.0",
+  "main": "index.js",
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "uuid": "^3.1.0"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/webpack --progress",
+    "prestart": "npm run build",
+    "start": "open-cli http://localhost:3000 & httpster -p 3000 -d ./dist"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "httpster": "^1.0.3",
+    "node-sass": "^4.5.3",
+    "open-cli": "^1.0.5",
+    "postcss-loader": "^2.0.6",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.6.0"
+  }
+}
