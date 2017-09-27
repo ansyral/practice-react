@@ -8,16 +8,16 @@ const options = {
     rating: "SORTED_BY_RATING"
 }
 
-const SortMenu = ({ store }) =>
+const SortMenu = ({ sort, onSelect = f=> f }) =>
     <nav className="menu">
         <h1>Sort Colors</h1>
         {Object.keys(options).map((item, i) =>
             <a key={i}
                href="#"
-               className={(store.getState().sort === options[item]) ? "selected" : null}
+               className={(sort === options[item]) ? "selected" : null}
                onClick={e => {
                    e.preventDefault();
-                   store.dispatch(sortColors(options[item]));
+                   onSelect(options[item]);
                }}>{item}</a>
         )}
     </nav>
