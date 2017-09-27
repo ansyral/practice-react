@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {addColor} from '../actions/actionsCreator';
 import '../stylesheets/AddColorForm.scss';
 
 class AddColorForm extends Component {
@@ -12,7 +13,7 @@ class AddColorForm extends Component {
 
     submit(e) {
         e.preventDefault();
-        this.props.onNewColor(this.state.title, this.state.color);
+        this.props.store.dispatch(addColor(this.state.title, this.state.color));
     }
     handleText(e) {
         this.setState({title: e.target.value});
