@@ -1,30 +1,43 @@
 import constants from './constants';
 import {v4} from 'uuid';
+import fetch from 'isomorphic-fetch';
 
-export const addColor = (title, color) =>
-({
-    type: constants.ADD_COLOR,
-    id: v4(),
-    title,
-    color,
-    timestamp: new Date().toString()
-})
+const parseResponse = response => response.json()
 
-export const removeColor = id =>
-    ({
-        type: constants.REMOVE_COLOR,
-        id
-    })
+const logError = error => console.error(error)
 
-export const rateColor = (id, rating) =>
-    ({
-        type: constants.RATE_COLOR,
-        id,
-        rating
-    })
+const fetchThenDispatch = (dispatch, url, method, body) =>
+    fetch(url, {method, body, headers: { 'Content-Type': 'application/json' }})
+        .then(parseResponse)
+        .then(dispatch)
+        .catch(logError)
 
-export const sortColors = sortedBy =>
-    ({
-        type: constants.SORT_COLORS,
-        sortBy: sortedBy,
-    })
+export const addColor = (title, color) => dispatch =>
+    fetchThenDispatch(
+        dispatch,
+        '/api/colors',
+        'POST',
+        JSON.stringify({title, color})
+    )
+
+export const removeColor = id => dispatch =>
+    fetchThenDispatch(
+        dispatch,
+        `/api/color/${id}`,
+        'DELETE'
+    )
+
+export const rateColor = (id, rating) => dispatch =>
+    fetchThenDispatch(
+        dispatch,
+        `/api/color/${id}`,
+        'PUT',
+        JSON.stringify({rating})
+    )
+
+export const sortColors = sortedBy => dispatch =>
+    fetchThenDispatch(
+        dispatch,
+        `/api/sort/${sortedBy}`,
+        'POST'
+    )

@@ -1,7 +1,9 @@
 var webpack = require("webpack")
+var ExtractTextPlugin = require("extract-text-webpack-plugin")
+var OptimizeCss = require('optimize-css-assets-webpack-plugin')
 
 process.noDeprecation = true
-const path = require('path');
+var path = require('path');
 module.exports = {
     entry: "./src/index.js",
     output: {
@@ -22,23 +24,22 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader','css-loader', {
-                    loader: 'postcss-loader',
-                    options: {
-                      plugins: () => [require('autoprefixer')]
-                    }}]
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ["css-loader", "autoprefixer-loader"]
+                })
             },
             {
                 test: /\.scss/,
-                use: ['style-loader','css-loader', {
-                    loader: 'postcss-loader',
-                    options: {
-                      plugins: () => [require('autoprefixer')]
-                    }}, 'sass-loader']
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ["css-loader","autoprefixer-loader","sass-loader"]
+                })
             }
         ]
     },
     plugins: [
+        new ExtractTextPlugin("bundle.css"),
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("production")
@@ -48,6 +49,14 @@ module.exports = {
             sourceMap: true,
             warnings: false,
             mangle: false
+        }),
+        new OptimizeCss({
+            assetNameRegExp: /\.optimize\.css$/g,
+            cssProcessor: require('cssnano'),
+            cssProcessorOptions: {
+                discardComments: {removeAll: true}
+            },
+            canPrint: true
         })
     ]
 }

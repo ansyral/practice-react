@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import './index.css';
 import App from './components/App';
 import storeFactory from './store/storeFactory';
 
 window.React = React;
 
-const store = storeFactory();
+const store = storeFactory(false, window.__INITIAL_STATE__);
 
 ReactDOM.render(
     <Provider store={store}>
